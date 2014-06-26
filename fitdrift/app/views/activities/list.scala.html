@@ -1,0 +1,32 @@
+@(activities : List[Activity])
+
+@main("My Activites") {
+
+    <h2>All Activities</h2>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Activity Id</th>
+                <th>Name</th>
+                <th>Description</th>
+            </tr>
+        </thead>
+        <tbody>
+        @for(activity <- activities) {
+            <tr>
+                <td><a href="@routes.Activities.details(activity.aid)">
+                    @activity.aid
+                </a></td>
+                <td><a href="@routes.Activities.details(activity.aid)">
+                    @activity.name
+                </a></td>
+                <td><a href="@routes.Activities.details(activity.aid)">
+                    @activity.description
+                </a></td>
+            </tr>
+        }
+        </tbody>
+
+    </table>
+}
