@@ -1,6 +1,7 @@
 package controllers;
 
 import models.Activity;
+import models.ActivityDAO;
 import play.mvc.Controller;
 import play.mvc.Result;
 
@@ -29,15 +30,16 @@ import java.net.UnknownHostException;
 public class Activities extends Controller {
 
     public static Result list() throws UnknownHostException {
-        MongoClient mongoClient = new MongoClient( "localhost" );
-        DB db = mongoClient.getDB( "fitdrift" );
-        Set<String> colls = db.getCollectionNames();
+        //MongoClient mongoClient = new MongoClient( "localhost" );
+        //DB db = mongoClient.getDB( "fitdrift" );
+        //Set<String> colls = db.getCollectionNames();
 
-        for (String s : colls) {
-            System.out.println(s);
-        }
+        //for (String s : colls) {
+        //    System.out.println(s);
+        //}
 
-        List<Activity> activities = new ArrayList<Activity>();
+        //List<Activity> activities = new ArrayList<Activity>();
+        List<Activity> activities = ActivityDAO.findAllByUserId("matt");
         return ok(list.render(activities));
     }
 
