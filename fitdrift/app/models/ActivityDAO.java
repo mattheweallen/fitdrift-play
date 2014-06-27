@@ -32,17 +32,41 @@ public class ActivityDAO {
 
     }
 
+//    public static List<Activity> findAllByUserId(String uid) {
+//        List<Activity> activities = new ArrayList<Activity>();
+//        DBCollection activityColl;
+//
+//        activityColl = MongoUtil.MongoDB().getCollection("activities");
+//        DBCursor cur = activityColl.find();
+//    //List<User> usersWithMatchEmail = new ArrayList<User>();
+//
+//        while(cur.hasNext()) {
+//            // this is where I want to convert cur.next() into a <Activity> POJO
+//            DBObject dbObject = cur.next();
+//            Activity a = new Activity.ActivityBuilder(dbObject.get("_id").toString(), (String)dbObject.get("name"), (String)dbObject.get("uid")).build();
+//            activities.add(a);
+//        }
+//
+//
+//        //MongoUtil.MongoDB().
+//        return activities;
+//    }
+
     public static List<Activity> findAllByUserId(String uid) {
         List<Activity> activities = new ArrayList<Activity>();
         DBCollection activityColl;
 
-        activityColl = MongoUtil.MongoDB().getCollection("activities");
-        DBCursor cur = activityColl.find();
-    //List<User> usersWithMatchEmail = new ArrayList<User>();
+        BasicDBObject query = new BasicDBObject();
 
-        while(cur.hasNext()) {
+        query.put("uid", uid);
+
+        activityColl = MongoUtil.MongoDB().getCollection("activities");
+        DBCursor cursor = activityColl.find(query);
+
+
+        while(cursor.hasNext()) {
             // this is where I want to convert cur.next() into a <Activity> POJO
-            DBObject dbObject = cur.next();
+            DBObject dbObject = cursor.next();
             Activity a = new Activity.ActivityBuilder(dbObject.get("_id").toString(), (String)dbObject.get("name"), (String)dbObject.get("uid")).build();
             activities.add(a);
         }
@@ -51,4 +75,33 @@ public class ActivityDAO {
         //MongoUtil.MongoDB().
         return activities;
     }
+
+
 }
+
+//List<Student> students = new ArrayList<Student>();
+//
+//BasicDBObject query = new BasicDBObject();
+//query.put("user", username);
+//        DBCursor cursor = theCollection.find(query);
+//        while (cursor.hasNext()) {
+//        DBObject theObj = cursor.next();
+//        //How to get the DBObject value to ArrayList of Java Object?
+//
+//        BasicDBList studentsList = (BasicDBList) theObj.get("students");
+//        for (int i = 0; i < studentsList.size(); i++) {
+//        BasicDBObject studentObj = (BasicDBObject) studentsList.get(i);
+//        String firstName = studentObj.getString("firstName");
+//        String lastName = studentObj.getString("lastName");
+//        String age = studentObj.getString("age");
+//        String gender = studentObj.getString("gender");
+//
+//        Student student = new Student();
+//        student.setFirstName(firstName);
+//        student.setLastName(lastName);
+//        student.setAge(age);
+//        student.setGender(gender);
+//
+//        students.add(student);
+//        }
+//        }

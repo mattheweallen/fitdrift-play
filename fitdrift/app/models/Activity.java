@@ -1,7 +1,7 @@
 package models;
 
 import java.lang.String;
-
+import com.mongodb.BasicDBObject;
 
 /**
  * Created by meallen on 6/26/2014.
@@ -39,9 +39,5 @@ public class Activity {
         public Activity build() {
             return new Activity(this);
         }
-    }
-
-    public String toString() {
-        return String.format("%s - %s", uid, name);
     }
 }
