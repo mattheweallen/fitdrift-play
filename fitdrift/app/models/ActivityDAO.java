@@ -59,10 +59,9 @@ public class ActivityDAO {
         BasicDBObject query = new BasicDBObject();
 
         query.put("uid", uid);
-
-        activityColl = MongoUtil.MongoDB().getCollection("activities");
+        DB mongodb = MongoResource.INSTANCE.getDB("fitdrift");
+        activityColl = mongodb.getCollection("activities");
         DBCursor cursor = activityColl.find(query);
-
 
         while(cursor.hasNext()) {
             // this is where I want to convert cur.next() into a <Activity> POJO
@@ -70,12 +69,8 @@ public class ActivityDAO {
             Activity a = new Activity.ActivityBuilder(dbObject.get("_id").toString(), (String)dbObject.get("name"), (String)dbObject.get("uid")).build();
             activities.add(a);
         }
-
-
-        //MongoUtil.MongoDB().
         return activities;
     }
-
 
 }
 

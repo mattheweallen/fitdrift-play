@@ -2,6 +2,7 @@ package controllers;
 
 import models.Activity;
 import models.ActivityDAO;
+import models.MongoResource;
 import play.mvc.Controller;
 import play.mvc.Result;
 
@@ -39,6 +40,9 @@ public class Activities extends Controller {
         //}
 
         //List<Activity> activities = new ArrayList<Activity>();
+        //MongoResource.INSTANCE.
+
+
         List<Activity> activities = ActivityDAO.findAllByUserId("matt");
         return ok(list.render(activities));
     }
