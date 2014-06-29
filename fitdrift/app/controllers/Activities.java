@@ -2,64 +2,66 @@ package controllers;
 
 import models.Activity;
 import models.ActivityDAO;
-import models.MongoResource;
-import play.mvc.Controller;
+import play.data.Form;
 import play.mvc.Result;
-
-import views.html.activities.list;
+import play.mvc.Controller;
+import views.html.activities.*;
 
 import java.util.List;
-import java.util.ArrayList;
-import java.util.Set;
-
-import com.mongodb.BasicDBObject;
-import com.mongodb.BulkWriteOperation;
-import com.mongodb.BulkWriteResult;
-import com.mongodb.Cursor;
-import com.mongodb.DB;
-import com.mongodb.DBCollection;
-import com.mongodb.DBCursor;
-import com.mongodb.DBObject;
-import com.mongodb.MongoClient;
-import com.mongodb.ParallelScanOptions;
-
-import java.net.UnknownHostException;
 
 /**
- * Created by matt on 6/25/14.
+ * Created by matt on 6/25A/14.
  */
 public class Activities extends Controller {
 
-    public static Result list() throws UnknownHostException {
-        //MongoClient mongoClient = new MongoClient( "localhost" );
-        //DB db = mongoClient.getDB( "fitdrift" );
-        //Set<String> colls = db.getCollectionNames();
+    private static final Form<Activity> activityForm = Form.form(Activity.class);
 
-        //for (String s : colls) {
-        //    System.out.println(s);
-        //}
-
-        //List<Activity> activities = new ArrayList<Activity>();
-        //MongoResource.INSTANCE.
-
-
+    public static Result list()  {
         List<Activity> activities = ActivityDAO.findAllByUserId("matt");
-        return ok(list.render(activities));
+        return ok(views.html.activities.list.render(activities));
     }
 
     public static Result newActivity() {
-        return TODO;
+
+        return ok(details.render(activityForm));
     }
 
     public static Result details(String aid) {
-        return TODO;
+        final Activity activity = ActivityDAO.findById(aid);
+        if (activity == null) {
+            return notFound(String.format("Activity %s does not exist.", aid));
+        }
+
+        Form<Activity> filledForm = activityForm.fill(activity);
+        return ok(details.render(filledForm));
     }
 
     public static Result save() {
-        return TODO;
+
+        Form<Activity> boundForm = activityForm.bindFromRequest();
+        if(boundForm.hasErrors()) {
+            flash("error", "Please correct the form below.");
+            return badRequest(details.render(boundForm));
+        }
+
+        Activity activity = boundForm.get();
+        System.out.println(activity.uid);
+        //product.save();
+        ActivityDAO.insert(activity);
+        flash("success",
+                String.format("Successfully added activity %s", activity));
+
+        return redirect(routes.Activities.list());
     }
 
     public static Result delete(String aid) {
-        return TODO;
+
+        final Activity activity = ActivityDAO.findById(aid);
+        if (activity == null) {
+            return notFound(String.format("Activity %s does not exist.", aid));
+        }
+
+        ActivityDAO.remove(activity);
+        return redirect(routes.Activities.list());
     }
 }

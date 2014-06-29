@@ -1,16 +1,22 @@
 package models;
 
+import play.data.validation.Constraints;
+
 import java.lang.String;
-import com.mongodb.BasicDBObject;
 
 /**
  * Created by meallen on 6/26/2014.
  */
 public class Activity {
-    public final String aid;
-    public final String name;
-    public final String description;
-    public final String uid;
+    public String aid;
+    @Constraints.Required
+    public String name;
+    public String description;
+    public String uid;
+
+    public Activity() {
+
+    }
 
     private Activity(ActivityBuilder builder) {
         this.aid = builder.aid;
@@ -20,15 +26,28 @@ public class Activity {
     }
 
     public static class ActivityBuilder {
-        private final String aid;
-        private final String name;
+        private String aid;
+        private String name;
         private String description;
-        private final String uid;
+        private String uid;
 
-        public ActivityBuilder(String aid, String name, String uid) {
+        public ActivityBuilder() {
+
+        }
+
+        public ActivityBuilder aid(String aid) {
             this.aid = aid;
+            return this;
+        }
+
+        public ActivityBuilder name(String name) {
             this.name = name;
+            return this;
+        }
+
+        public ActivityBuilder uid(String uid) {
             this.uid = uid;
+            return this;
         }
 
         public ActivityBuilder description(String description) {
@@ -39,5 +58,9 @@ public class Activity {
         public Activity build() {
             return new Activity(this);
         }
+    }
+
+    public String toString() {
+        return String.format("%s - %s", uid, name);
     }
 }

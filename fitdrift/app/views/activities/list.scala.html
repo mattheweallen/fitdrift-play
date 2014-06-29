@@ -4,12 +4,26 @@
 
     <h2>All Activities</h2>
 
+    <script>
+     function del(urlToDelete) {
+        $.ajax({
+          url: urlToDelete,
+          type: 'DELETE',
+          success: function(results) {
+            // Refresh the page
+            location.reload();
+          }
+        });
+      }
+    </script>
+
     <table class="table table-striped">
         <thead>
             <tr>
                 <th>Activity Id</th>
                 <th>Name</th>
                 <th>Description</th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
@@ -24,9 +38,16 @@
                 <td><a href="@routes.Activities.details(activity.aid)">
                     @activity.description
                 </a></td>
+                <td>
+                    <a href="@routes.Activities.details(activity.aid)"><i class="glyphicon glyphicon-pencil"></i></a>
+                    <a onclick="javascript:del('@routes.Activities.delete(activity.aid)')"><i class="glyphicon glyphicon-trash"></i></a>
+                </td>
             </tr>
         }
         </tbody>
 
     </table>
+
+    <a href="@routes.Activities.newActivity()" class="btn btn-primary">
+        <i class="glyphicon-plus"></i> New Activity</a>
 }
