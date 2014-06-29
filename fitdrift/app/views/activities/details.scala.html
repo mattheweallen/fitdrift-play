@@ -4,12 +4,15 @@
 
 @main("Activity form") {
     <h1>Activity form</h1>
-    @helper.form(action = routes.Activities.save()) {
+    @helper.form(action = routes.Activities.save(),
+        'enctype -> "multipart/form-data") {
     <fieldset>
         <legend>Activity (@activityForm("name").valueOr("New"))</legend>
         @helper.inputText(activityForm("uid"),'_label -> "uid")
         @helper.inputText(activityForm("name"),'_label -> "Name")
         @helper.textarea(activityForm("description"), '_label -> "Description")
+        <label>&{'Pictures'}</label>
+        <input type="file" multiple name="files" id="files"/>
     </fieldset>
     <input type="submit" class="btn btn-primary" value="Save">
     <a class="btn" href="@routes.Application.index()">Cancel</a>
