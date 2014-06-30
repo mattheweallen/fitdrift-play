@@ -12,5 +12,7 @@ libraryDependencies ++= Seq(
   cache,
   javaWs,
   "org.mongodb" % "mongo-java-driver" % "2.12.2",
-  "com.google.guava" % "guava" % "17.0"
+  "com.google.guava" % "guava" % "17.0",
+  "org.webjars" %% "webjars-play" % "2.3.0",
+  "org.webjars" % "bootstrap" % "3.2.0"
 )
