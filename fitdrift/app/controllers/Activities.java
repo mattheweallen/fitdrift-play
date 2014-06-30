@@ -1,12 +1,19 @@
 package controllers;
 
+import com.google.common.io.Files;
 import models.Activity;
 import models.ActivityDAO;
+import views.html.activities.details;
+import views.html.activities.list;
+
+
 import play.data.Form;
 import play.mvc.Result;
 import play.mvc.Controller;
-import views.html.activities.*;
 
+
+
+import java.io.File;
 import java.util.List;
 
 /**
@@ -18,7 +25,7 @@ public class Activities extends Controller {
 
     public static Result list()  {
         List<Activity> activities = ActivityDAO.findAllByUserId("matt");
-        return ok(views.html.activities.list.render(activities));
+        return ok(list.render(activities));
     }
 
     public static Result newActivity() {
@@ -45,8 +52,7 @@ public class Activities extends Controller {
         }
 
         Activity activity = boundForm.get();
-        System.out.println(activity.uid);
-        //product.save();
+
         ActivityDAO.insert(activity);
         flash("success",
                 String.format("Successfully added activity %s", activity));

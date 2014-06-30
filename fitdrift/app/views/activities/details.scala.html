@@ -11,8 +11,7 @@
         @helper.inputText(activityForm("uid"),'_label -> "uid")
         @helper.inputText(activityForm("name"),'_label -> "Name")
         @helper.textarea(activityForm("description"), '_label -> "Description")
-        <label>&{'Pictures'}</label>
-        <input type="file" multiple name="files" id="files"/>
+        @helper.inputFile(activityForm("activityfile"), '_label -> "Activity File")
     </fieldset>
     <input type="submit" class="btn btn-primary" value="Save">
     <a class="btn" href="@routes.Application.index()">Cancel</a>

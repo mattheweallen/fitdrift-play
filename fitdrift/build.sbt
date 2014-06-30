@@ -11,5 +11,6 @@ libraryDependencies ++= Seq(
   javaEbean,
   cache,
   javaWs,
-  "org.mongodb" % "mongo-java-driver" % "2.12.2"
+  "org.mongodb" % "mongo-java-driver" % "2.12.2",
+  "com.google.guava" % "guava" % "17.0"
 )
