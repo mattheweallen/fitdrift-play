@@ -2,19 +2,23 @@ package controllers;
 
 import com.google.common.io.Files;
 import models.Activity;
-import models.ActivityDAO;
+
 import views.html.activities.details;
 import views.html.activities.list;
-
 
 import play.data.Form;
 import play.mvc.Result;
 import play.mvc.Controller;
 
-
-
 import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import play.mvc.With;
+
+import static play.mvc.Http.MultipartFormData;
+import models.ActivityDAO;
 
 /**
  * Created by matt on 6/25A/14.
@@ -44,6 +48,7 @@ public class Activities extends Controller {
     }
 
     public static Result save() {
+        MultipartFormData body = request().body().asMultipartFormData();
 
         Form<Activity> boundForm = activityForm.bindFromRequest();
         if(boundForm.hasErrors()) {
@@ -52,6 +57,20 @@ public class Activities extends Controller {
         }
 
         Activity activity = boundForm.get();
+
+        MultipartFormData.FilePart part = body.getFile("activityfile");
+        if(part != null) {
+            File activityfile = part.getFile();
+            activityfile.
+
+            try {
+                //product.picture = Files.toByteArray(picture);
+                Files.toByteArray(activityfile);
+            } catch (IOException e) {
+                return internalServerError("Error reading file upload");
+            }
+        }
+
 
         ActivityDAO.insert(activity);
         flash("success",
