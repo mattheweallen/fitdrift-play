@@ -3,6 +3,7 @@ package controllers;
 import com.google.common.io.Files;
 import models.Activity;
 
+import org.xml.sax.SAXException;
 import views.html.activities.details;
 import views.html.activities.list;
 
@@ -17,8 +18,12 @@ import java.util.List;
 import java.util.Set;
 import play.mvc.With;
 
+import utils.FileUtil;
+
 import static play.mvc.Http.MultipartFormData;
 import models.ActivityDAO;
+
+import javax.xml.parsers.ParserConfigurationException;
 
 /**
  * Created by matt on 6/25A/14.
@@ -61,12 +66,19 @@ public class Activities extends Controller {
         MultipartFormData.FilePart part = body.getFile("activityfile");
         if(part != null) {
             File activityfile = part.getFile();
-            activityfile.
+            //activityfile.
 
             try {
                 //product.picture = Files.toByteArray(picture);
-                Files.toByteArray(activityfile);
+                //Files.toByteArray(activityfile);
+                FileUtil.uploadAcitvityPointsFromGPX(activityfile, "matt");
             } catch (IOException e) {
+                return internalServerError("Error reading file upload");
+            } catch (ParserConfigurationException e) {
+                e.printStackTrace();
+                return internalServerError("Error reading file upload");
+            } catch (SAXException e) {
+                e.printStackTrace();
                 return internalServerError("Error reading file upload");
             }
         }
