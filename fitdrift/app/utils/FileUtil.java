@@ -1,8 +1,8 @@
 package utils;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.sql.Timestamp;
+//import java.io.InputStream;
+//import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Date;
@@ -10,7 +10,7 @@ import java.util.Date;
 import javax.xml.parsers.ParserConfigurationException;
 
 //import org.primefaces.model.UploadedFile;
-import models.Activity;
+//import models.Activity;
 import models.GeoJSON.Feature;
 import models.GeoJSON.Properties;
 import models.GeoJSON.Geometry;
@@ -33,13 +33,16 @@ import java.sql.Timestamp;
 
 
 /**
+ * Class for file handling.
  * Created by matt on 6/29/14.
  */
 public class FileUtil {
+
     /**
+     * Parses GPX file and builds GeoJson Feature Object.
      *
      * @param file
-     * @param username
+     * @return
      * @throws ParserConfigurationException
      * @throws SAXException
      * @throws IOException
@@ -48,13 +51,8 @@ public class FileUtil {
         FileInputStream in = new FileInputStream(file);
         GPXParser p = new GPXParser();
         GPX gpx = p.parseGPX(in);
-        //Feature feature = new Feature();
-        //Geometry geometry = new Geometry();
-        List<Double[]> coordinates = new ArrayList<Double[]>();
-        //feature.type = "Feature";
-        //geometry.type = "LineString";
 
-        //Properties properties = new Properties();
+        List<Double[]> coordinates = new ArrayList<Double[]>();
         List<Date> time = new ArrayList<Date>();
 
         for (Track t : gpx.getTracks()) {
@@ -68,10 +66,6 @@ public class FileUtil {
                 time.add(wp.getTime());
             }
         }
-        //geometry.coordinates = coordinates;
-        //properties.time = time;
-        //feature.geometry = geometry;
-        //feature.properties = properties;
 
         Feature feature = new Feature.FeatureBuilder()
                 .geometry(new Geometry.GeometryBuilder().coordinates(coordinates).type("LineString").build())

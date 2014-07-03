@@ -3,6 +3,8 @@ package models.GeoJSON;
 import java.util.List;
 
 /**
+ * geometry object of GeoJson feature object.
+ *
  * Created by meallen on 7/3/2014.
  */
 public class Geometry {

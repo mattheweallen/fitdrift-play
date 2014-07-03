@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Date;
 
 /**
+ * properties object of GeoJson Feature object.
+ *
  * Created by meallen on 7/3/2014.
  */
 public class Properties {

@@ -1,6 +1,8 @@
 package models.GeoJSON;
 
 /**
+ * Java representation of GeoJson Feature
+ *
  * Created by meallen on 7/3/2014.
  */
 public class Feature {
