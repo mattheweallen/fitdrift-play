@@ -5,7 +5,7 @@
 @main("Activity form") {
     <h1>Activity form</h1>
     @helper.form(action = routes.Activities.save(),
-        'enctype -> "multipart/form-data") {
+    'enctype -> "multipart/form-data") {
     <fieldset>
         <legend>Activity (@activityForm("name").valueOr("New"))</legend>
         @helper.inputText(activityForm("uid"),'_label -> "uid")

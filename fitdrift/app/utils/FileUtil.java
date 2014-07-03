@@ -48,98 +48,39 @@ public class FileUtil {
         FileInputStream in = new FileInputStream(file);
         GPXParser p = new GPXParser();
         GPX gpx = p.parseGPX(in);
-
-        Feature feature = new Feature();
-
-        Geometry geometry = new Geometry();
-
-
+        //Feature feature = new Feature();
+        //Geometry geometry = new Geometry();
         List<Double[]> coordinates = new ArrayList<Double[]>();
+        //feature.type = "Feature";
+        //geometry.type = "LineString";
 
-
-
-
-        feature.type = "Feature";
-        geometry.type = "LineString";
-
-        Properties properties = new Properties();
+        //Properties properties = new Properties();
         List<Date> time = new ArrayList<Date>();
-        //Pproperties = properties;
 
-        //a.setName(file.getFileName());
-        //a.setUser(AthleticgisFacade.findUserByUsername(username));
-
-        //List<ActivityPoint> activityPoints = new ArrayList<ActivityPoint>();
         for (Track t : gpx.getTracks()) {
             for (Waypoint wp : t.getTrackPoints()) {
-
                 Double[] coord = new Double[3];
                 coord[0] = new Double(wp.getLongitude());
                 coord[1] = new Double(wp.getLatitude());
                 coord[2] = new Double(wp.getElevation());
-
                 coordinates.add(coord);
 
                 time.add(wp.getTime());
-
-
-                // System.out.println(wp.getLatitude() + "," +
-                // wp.getLongitude());
-
-//                ActivityPoint activityPoint = new ActivityPoint();
-//                activityPoint.setLatitude(wp.getLatitude());
-//                activityPoint.setLongitude(wp.getLongitude());
-//                activityPoint.setTime(new Timestamp(wp.getTime().getTime()));
-//                activityPoint.setElevation(wp.getElevation());
-//                activityPoints.add(activityPoint);
-                //System.out.println("Latitude: " + wp.getLatitude() + "Longitude: " + wp.getLongitude() + "Elevation: " + wp.getElevation());
             }
         }
+        //geometry.coordinates = coordinates;
+        //properties.time = time;
+        //feature.geometry = geometry;
+        //feature.properties = properties;
 
-        geometry.coordinates = coordinates;
+        Feature feature = new Feature.FeatureBuilder()
+                .geometry(new Geometry.GeometryBuilder().coordinates(coordinates).type("LineString").build())
+                .properties(new Properties.PropertiesBuilder().time(time).build())
+                .type("Feature")
+                .build();
 
-        properties.time = time;
-
-        feature.geometry = geometry;
-        feature.properties = properties;
-
-        //a.setActivitypoints(activityPoints);
-
-        //distance TODO is elevation non null
-        //GISCalculator gisc = new GISCalculator();
-
-        //a.setDistance(gisc.computePathDistance(activityPoints) * 0.000621371); //0.000621371 convert meters to miles
-
-        //user defined MyMap not used
-        //a.setUseMyMap(false);
-
-        //distance
-
-        //AthleticgisFacade.persistActivityAndActivityPoints(a, activityPoints);
 
         in.close();
         return feature;
     }
 }
-
-
-
-//Activity a = new Activity();
-//a.feature = new Feature();
-//        a.feature.geometry = new Geometry();
-//
-//
-//        a.feature.geometry.coordinates = new ArrayList<Double[]>();
-//
-//
-//        Double[] coord1 = new Double[3];
-//        coord1[0] = new Double(23.5);
-//        coord1[1] = new Double(24.5);
-//        coord1[2] = new Double(-23.5);
-//
-//
-//        a.feature.geometry.coordinates.add(coord2);
-//
-//
-//
-//        System.out.println(toJson(a.feature));

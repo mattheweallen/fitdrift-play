@@ -19,9 +19,7 @@ public class Activity {
     public String uid;
     public Feature feature;
 
-    public Activity() {
-
-    }
+    public Activity() {}
 
     private Activity(ActivityBuilder builder) {
         this.aid = builder.aid;
