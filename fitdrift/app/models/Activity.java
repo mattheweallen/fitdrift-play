@@ -1,5 +1,9 @@
 package models;
 
+import models.GeoJSON.Feature;
+import models.GeoJSON.Geometry;
+import models.GeoJSON.Properties;
+
 import play.data.validation.Constraints;
 
 import java.lang.String;
@@ -13,6 +17,7 @@ public class Activity {
     public String name;
     public String description;
     public String uid;
+    public Feature feature;
 
     public Activity() {
 

@@ -16,6 +16,10 @@ import java.lang.String;
 
 import java.util.List;
 import java.util.ArrayList;
+
+import static play.libs.Json.toJson;
+import static play.libs.Json.stringify;
+
 /**
  * Created by meallen on 6/27/2014.
  * This class is for getting data from MongoDB for collection activities
@@ -25,7 +29,15 @@ public class ActivityDAO {
     public static void insert(Activity activity) {
         BasicDBObject doc = new BasicDBObject("uid", activity.uid)
                 .append("name", activity.name)
-                .append("description", activity.description);
+                .append("description", activity.description)
+                .append("feature",new BasicDBObject("type", activity.feature.type)
+                        .append("geometry", new BasicDBObject("type",activity.feature.geometry.type)
+                                .append("coordinates",activity.feature.geometry.coordinates))
+                        .append("properties",new BasicDBObject("time", activity.feature.properties.time)));
+                //.append();
+        //BasicDBObject doc = new BasicDBObject("uid", toJson(activity));
+
+                //.append("feature",activity.feature);
                 //.append("info", new BasicDBObject("x", 203).append("y", 102));
         DB mongodb = MongoResource.INSTANCE.getDB("fitdrift");
         DBCollection activityColl;

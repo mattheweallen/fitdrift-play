@@ -3,6 +3,8 @@ package controllers;
 import com.google.common.io.Files;
 import models.Activity;
 
+import models.GeoJSON.Feature;
+import models.GeoJSON.Geometry;
 import org.xml.sax.SAXException;
 import views.html.activities.details;
 import views.html.activities.list;
@@ -21,6 +23,7 @@ import play.mvc.With;
 import utils.FileUtil;
 
 import static play.mvc.Http.MultipartFormData;
+import static play.libs.Json.toJson;
 import models.ActivityDAO;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -44,6 +47,9 @@ public class Activities extends Controller {
 
     public static Result details(String aid) {
         final Activity activity = ActivityDAO.findById(aid);
+
+
+
         if (activity == null) {
             return notFound(String.format("Activity %s does not exist.", aid));
         }
@@ -66,12 +72,12 @@ public class Activities extends Controller {
         MultipartFormData.FilePart part = body.getFile("activityfile");
         if(part != null) {
             File activityfile = part.getFile();
-            //activityfile.
-
             try {
-                //product.picture = Files.toByteArray(picture);
-                //Files.toByteArray(activityfile);
-                FileUtil.uploadAcitvityPointsFromGPX(activityfile, "matt");
+
+                Feature feature = FileUtil.buildFeatureFromGPX(activityfile);
+                activity.feature = feature;
+                //System.out.println(toJson(activity.feature));
+
             } catch (IOException e) {
                 return internalServerError("Error reading file upload");
             } catch (ParserConfigurationException e) {
@@ -87,6 +93,9 @@ public class Activities extends Controller {
         ActivityDAO.insert(activity);
         flash("success",
                 String.format("Successfully added activity %s", activity));
+
+        //flash("success",
+          //      toJson(activity).toString());
 
         return redirect(routes.Activities.list());
     }
