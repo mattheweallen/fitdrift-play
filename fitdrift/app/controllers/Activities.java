@@ -19,13 +19,13 @@ import java.io.IOException;
 //import java.util.ArrayList;
 import java.util.List;
 //import java.util.Set;
-//import play.mvc.With;
+import play.mvc.With;
 
 import utils.FileUtil;
 
 import static play.mvc.Http.MultipartFormData;
 //import static play.libs.Json.toJson;
-import models.ActivityDAO;
+import models.Activity;
 
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -43,7 +43,7 @@ public class Activities extends Controller {
     }
 
     public static Result list(Integer page)  {
-        List<Activity> activities = ActivityDAO.findAllByUserId("matt");
+        List<Activity> activities = Activity.findAllByUserId("matt");
         return ok(list.render(activities));
     }
 
@@ -61,7 +61,7 @@ public class Activities extends Controller {
      * @return
      */
     public static Result details(String aid) {
-        final Activity activity = ActivityDAO.findById(aid);
+        final Activity activity = Activity.findById(aid);
 
         if (activity == null) {
             return notFound(String.format("Activity %s does not exist.", aid));
@@ -104,7 +104,7 @@ public class Activities extends Controller {
         }
 
 
-        ActivityDAO.insert(activity);
+        Activity.insert(activity);
         flash("success",
                 String.format("Successfully added activity %s", activity));
         return redirect(routes.Activities.list(1));
@@ -117,12 +117,12 @@ public class Activities extends Controller {
      */
     public static Result delete(String aid) {
 
-        final Activity activity = ActivityDAO.findById(aid);
+        final Activity activity = Activity.findById(aid);
         if (activity == null) {
             return notFound(String.format("Activity %s does not exist.", aid));
         }
 
-        ActivityDAO.remove(activity);
+        Activity.remove(activity);
         return redirect(routes.Activities.list(1));
     }
 }
