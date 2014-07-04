@@ -56,6 +56,7 @@ public class ActivityDAO {
         DBCollection activityColl;
         activityColl = mongodb.getCollection("activities");
         activityColl.remove(doc);
+
     }
 
     public static List<Activity> findAll() {

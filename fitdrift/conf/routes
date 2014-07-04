@@ -3,10 +3,10 @@
 # ~~~~
 
 # Home page
-GET     /                           controllers.Application.index()
+GET     /                           controllers.Activities.index()
 
 
-GET     /activities/                controllers.Activities.list()
+GET     /activities/                controllers.Activities.list(page: Integer ?= 1)
 GET     /activities/new             controllers.Activities.newActivity()
 GET     /activities/:aid            controllers.Activities.details(aid: String)
 POST    /activities/                controllers.Activities.save()

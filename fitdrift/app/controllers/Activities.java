@@ -6,6 +6,7 @@ import models.Activity;
 import models.GeoJSON.Feature;
 //import models.GeoJSON.Geometry;
 import org.xml.sax.SAXException;
+import play.mvc.With;
 import views.html.activities.details;
 import views.html.activities.list;
 
@@ -32,11 +33,16 @@ import javax.xml.parsers.ParserConfigurationException;
  * Created by matt on 6/25A/14.
  * This class is a play mvc Controller for Activities.
  */
+@With(CatchAction.class)
 public class Activities extends Controller {
 
     private static final Form<Activity> activityForm = Form.form(Activity.class);
 
-    public static Result list()  {
+    public static Result index() {
+        return redirect(routes.Activities.list(1));
+    }
+
+    public static Result list(Integer page)  {
         List<Activity> activities = ActivityDAO.findAllByUserId("matt");
         return ok(list.render(activities));
     }
@@ -101,7 +107,7 @@ public class Activities extends Controller {
         ActivityDAO.insert(activity);
         flash("success",
                 String.format("Successfully added activity %s", activity));
-        return redirect(routes.Activities.list());
+        return redirect(routes.Activities.list(1));
     }
 
     /**
@@ -117,6 +123,6 @@ public class Activities extends Controller {
         }
 
         ActivityDAO.remove(activity);
-        return redirect(routes.Activities.list());
+        return redirect(routes.Activities.list(1));
     }
 }
