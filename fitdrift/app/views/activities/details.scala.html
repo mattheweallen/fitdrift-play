@@ -3,17 +3,17 @@
 @import helper.twitterBootstrap._
 
 @main("Activity form") {
-    <h1>Activity form</h1>
-    @helper.form(action = routes.Activities.save(),
-    'enctype -> "multipart/form-data") {
-    <fieldset>
-        <legend>Activity (@activityForm("name").valueOr("New"))</legend>
-        @helper.inputText(activityForm("uid"),'_label -> "uid")
-        @helper.inputText(activityForm("name"),'_label -> "Name")
-        @helper.textarea(activityForm("description"), '_label -> "Description")
-        @helper.inputFile(activityForm("activityfile"), '_label -> "Activity File")
-    </fieldset>
-    <input type="submit" class="btn btn-primary" value="Save">
-    <a class="btn" href="@routes.Activities.index()">Cancel</a>
-    }
+<h1>Activity form</h1>
+@helper.form(action = routes.Activities.save(),
+'enctype -> "multipart/form-data") {
+<fieldset>
+    <legend>Activity (@activityForm("name").valueOr("New"))</legend>
+    @helper.inputText(activityForm("uid"),'_label -> "uid")
+    @helper.inputText(activityForm("name"),'_label -> "Name")
+    @helper.textarea(activityForm("description"), '_label -> "Description")
+    @helper.inputFile(activityForm("activityfile"), '_label -> "Activity File")
+</fieldset>
+<input type="submit" class="btn btn-primary" value="Save">
+<a class="btn" href="@routes.Activities.index()">Cancel</a>
+}
 }

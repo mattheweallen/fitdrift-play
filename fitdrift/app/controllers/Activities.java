@@ -9,6 +9,7 @@ import org.xml.sax.SAXException;
 import play.mvc.With;
 import views.html.activities.details;
 import views.html.activities.list;
+import views.html.activities.map;
 
 import play.data.Form;
 import play.mvc.Result;
@@ -24,7 +25,7 @@ import play.mvc.With;
 import utils.FileUtil;
 
 import static play.mvc.Http.MultipartFormData;
-//import static play.libs.Json.toJson;
+import static play.libs.Json.toJson;
 import models.Activity;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -124,5 +125,25 @@ public class Activities extends Controller {
 
         Activity.remove(activity);
         return redirect(routes.Activities.list(1));
+    }
+
+    public static Result feature(String aid) {
+        //final Activity activity = Activity.findById(aid);
+        String featureStr = Activity.findActivityFeatureStringById(aid);
+
+        System.out.println(featureStr);
+
+        if(featureStr == null) return notFound();
+        return ok(featureStr);
+    }
+
+    public static Result map(String aid) {
+        //final Activity activity = Activity.findById(aid);
+
+        //if (activity == null) {
+        //    return notFound(String.format("Activity %s does not exist.", aid));
+        //}
+        //Form<Activity> filledForm = activityForm.fill(activity);
+        return ok(map.render(aid));
     }
 }

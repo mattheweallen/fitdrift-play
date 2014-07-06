@@ -22,6 +22,9 @@ import java.lang.String;
 import java.util.ArrayList;
 import java.util.List;
 
+import static play.libs.Json.toJson;
+import static play.libs.Json.fromJson;
+
 /**
  * Created by meallen on 6/26/2014.
  */
@@ -184,13 +187,74 @@ public class Activity {
 
         Activity a = null;
         if(dbObject != null) {
+            Feature feature = new Feature();
+            feature.type = ((BasicDBObject)(dbObject.get("feature"))).get("type").toString();
+
+
+            //System.out.println(feature.type);
+
+            //(Feature)dbObject.get("feature")
+            //System.out.println(dbObject.keySet().toString());
+            //System.out.println(dbObject.get("feature").getClass());
+            //Feature f = fromJson(toJson(dbObject.get("feature").toString()), Feature.class);
+            toJson(dbObject.get("feature").toString());
             a = new Activity.ActivityBuilder()
                     .aid(dbObject.get("_id").toString())
                     .name((String) dbObject.get("name"))
-                    .uid((String) dbObject.get("uid")).build();
+                    .uid((String) dbObject.get("uid"))
+                    .feature(feature).build();
+
+            //System.out.println(a.feature.type);
+            //System.out.println(a.feature.geometry.coordinates.get(0));
             //activities.add(a);
             //}
         }
         return a;
+    }
+
+    public static String findActivityFeatureStringById(String aid) {
+        //List<Activity> activities = new ArrayList<Activity>();
+        DBCollection activityColl;
+
+        BasicDBObject query = new BasicDBObject();
+
+        query.put("_id", new ObjectId(aid));
+        DB mongodb = MongoResource.INSTANCE.getDB("fitdrift");
+        activityColl = mongodb.getCollection("activities");
+        DBObject dbObject = activityColl.findOne(query);
+
+        //while(cursor.hasNext()) {
+        // this is where I want to convert cur.next() into a <Activity> POJO
+        //  DBObject dbObject = cursor.next();
+        //TODO fix builder
+        //Activity a = new Activity.ActivityBuilder(dbObject.get("_id").toString(), (String)dbObject.get("name"), (String)dbObject.get("uid")).build();
+
+        Activity a = null;
+        String featureStr = null;
+
+        if(dbObject != null) {
+            Feature feature = new Feature();
+            //feature.type = ((BasicDBObject)(dbObject.get("feature"))).get("type").toString();
+            featureStr = dbObject.get("feature").toString();
+
+            //System.out.println(feature.type);
+
+            //(Feature)dbObject.get("feature")
+            //System.out.println(dbObject.keySet().toString());
+            //System.out.println(dbObject.get("feature").getClass());
+            //Feature f = fromJson(toJson(dbObject.get("feature").toString()), Feature.class);
+            //toJson(dbObject.get("feature").toString());
+//            a = new Activity.ActivityBuilder()
+//                    .aid(dbObject.get("_id").toString())
+//                    .name((String) dbObject.get("name"))
+//                    .uid((String) dbObject.get("uid"))
+//                    .feature(feature).build();
+
+            //System.out.println(a.feature.type);
+            //System.out.println(a.feature.geometry.coordinates.get(0));
+            //activities.add(a);
+            //}
+        }
+        return featureStr;
     }
 }

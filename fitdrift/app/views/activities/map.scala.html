@@ -1,0 +1,38 @@
+@(aid: String)
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Data Layer: Styling</title>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <style>
+        html, body, #map-canvas {
+        height: 100%;
+        margin: 0px;
+        padding: 0px
+        }
+    </style>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="@routes.Assets.at("javascripts/fitdrift.js")"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?v=3&amp;key=AIzaSyApDXRNzq6eGqWKUbufj3MzhJ4P0RF0Ghw&amp;sensor=false"></script>
+    <script>
+        var map;
+
+        function initialize() {
+            var myLatLng = new google.maps.LatLng(43.92,-91.5);
+            map = new google.maps.Map(document.getElementById('map-canvas'), {
+                zoom: 4,
+                center : myLatLng
+            });
+            $.get("@routes.Activities.feature(aid)",function(data,status){
+                loadGeoJsonString(data);
+            });
+        }
+        google.maps.event.addDomListener(window, 'load', initialize);
+    </script>
+</head>
+<body>
+<div id="map-canvas"></div>
+</body>
+</html>
