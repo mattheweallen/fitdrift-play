@@ -5,6 +5,8 @@
 # Home page
 GET     /                           controllers.Activities.index()
 
+GET     /data                       controllers.Activities.data()
+
 
 GET     /activities/                controllers.Activities.list(page: Integer ?= 1)
 GET     /activities/new             controllers.Activities.newActivity()

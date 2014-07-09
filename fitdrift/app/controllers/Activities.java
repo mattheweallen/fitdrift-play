@@ -10,6 +10,7 @@ import play.mvc.With;
 import views.html.activities.details;
 import views.html.activities.list;
 import views.html.activities.map;
+import views.html.activities.data;
 
 import play.data.Form;
 import play.mvc.Result;
@@ -41,6 +42,10 @@ public class Activities extends Controller {
 
     public static Result index() {
         return redirect(routes.Activities.list(1));
+    }
+
+    public static Result data()  {
+        return ok(data.render());
     }
 
     public static Result list(Integer page)  {
