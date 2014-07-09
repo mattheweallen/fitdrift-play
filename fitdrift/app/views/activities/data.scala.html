@@ -4,10 +4,30 @@
     <meta charset="UTF-8">
     <title>D3 Page Template</title>
     <script type="text/javascript" src="@routes.Assets.at("javascripts/d3.js")"></script>
+    <style type="text/css">
+
+        div.bar {
+            display: inline-block;
+            width: 20px;
+            height: 75px;
+            background-color: teal;
+        }
+
+
+    </style>
+
 </head>
 <body>
     <script type="text/javascript">
-        d3.select("body").append("p").text("New Paragraph!");
+        var dataset = [5, 10, 15, 20, 25];
+
+        d3.select("body").selectAll("div")
+				.data(dataset)
+				.enter()
+				.append("div")
+				.attr("class", "bar");
+
+
     </script>
 </body>
 </html>
