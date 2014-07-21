@@ -91,13 +91,41 @@ public class Activities extends Controller {
 
         Activity activity = boundForm.get();
 
-        MultipartFormData.FilePart part = body.getFile("activityfile");
-        if(part != null) {
-            File activityfile = part.getFile();
+        //MultipartFormData.FilePart part = body.getFile("activityfile");
+
+
+        //Get all files bound to the form when submitted
+        //List<MultipartFormData.FilePart> plate_files = request().body().asMultipartFormData().getFiles();
+//Get files from a specific name or id
+       // FilePart myfile = request().body().asMultipartFormData().getFile("files");
+
+
+        //Get all files bound to the form when submitted
+        List<MultipartFormData.FilePart> plate_files = request().body().asMultipartFormData().getFiles();
+
+        //if(part != null) {
+        if(plate_files != null) {
+            //File activityfile = part.getFile();
+
+
+
+
             try {
 
-                Feature feature = FileUtil.buildFeatureFromGPX(activityfile);
+            //    Feature feature = FileUtil.buildFeatureFromGPX(activityfile);
+            //    activity.feature = feature;
+
+            for(MultipartFormData.FilePart filepart : plate_files) {
+                Feature feature = FileUtil.buildFeatureFromGPX(filepart.getFile());
+
+                System.out.println(feature.geometry.type);
+                System.out.println(feature.geometry.coordinates.get(0));
+
                 activity.feature = feature;
+            }
+
+
+
             } catch (IOException e) {
                 return internalServerError("Error reading file upload");
             } catch (ParserConfigurationException e) {
