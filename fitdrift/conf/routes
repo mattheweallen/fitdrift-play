@@ -16,6 +16,9 @@ DELETE  /activities/:aid            controllers.Activities.delete(aid: String)
 GET     /feature/:aid               controllers.Activities.feature(aid)
 GET     /map/:aid                   controllers.Activities.map(aid: String)
 
+GET     /upload/files               controllers.Activities.upload()
+POST    /upload/files               controllers.Activities.uploadFiles()
+
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)
 

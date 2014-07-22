@@ -1,6 +1,7 @@
 package models;
 
 import models.GeoJSON.Feature;
+import models.GeoJSON.FeatureCollection;
 import models.GeoJSON.Geometry;
 import models.GeoJSON.Properties;
 
@@ -34,7 +35,10 @@ public class Activity {
     public String name;
     public String description;
     public String uid;
-    public Feature feature;
+    //@TODO remove feature, replace with FeatureCollection
+    //public Feature feature;
+
+    public FeatureCollection featureCollection;
 
     public Activity() {}
 
@@ -43,7 +47,7 @@ public class Activity {
         this.name = builder.name;
         this.description = builder.description;
         this.uid = builder.uid;
-        this.feature = builder.feature;
+        this.featureCollection = builder.featureCollection;
     }
 
     public static class ActivityBuilder {
@@ -51,7 +55,7 @@ public class Activity {
         private String name;
         private String description;
         private String uid;
-        private Feature feature;
+        private FeatureCollection featureCollection;
 
         public ActivityBuilder() {
 
@@ -77,8 +81,8 @@ public class Activity {
             return this;
         }
 
-        public ActivityBuilder feature(Feature feature) {
-            this.feature = feature;
+        public ActivityBuilder featureCollection(FeatureCollection featureCollection) {
+            this.featureCollection = featureCollection;
             return this;
         }
 
@@ -92,15 +96,29 @@ public class Activity {
     }
 
     public static void insert(Activity activity) {
+
+        List<BasicDBObject> features = new ArrayList<BasicDBObject>();
+        for(Feature feature : activity.featureCollection.features) {
+            BasicDBObject featureDBObject = new BasicDBObject("type", feature.type)
+                    .append("geometry", new BasicDBObject("type",feature.geometry.type)
+                            .append("coordinates",feature.geometry.coordinates))
+                    .append("properties",new BasicDBObject("time",feature.properties.time));
+            features.add(featureDBObject);
+        }
+
         BasicDBObject doc = new BasicDBObject("uid", activity.uid)
                 .append("name", activity.name)
                 .append("description", activity.description)
-                .append("feature",new BasicDBObject("type", activity.feature.type)
-                        .append("geometry", new BasicDBObject("type",activity.feature.geometry.type)
-                                .append("coordinates",activity.feature.geometry.coordinates))
-                        .append("properties",new BasicDBObject("time", activity.feature.properties.time)));
+
+                .append("featureCollection", new BasicDBObject("type", activity.featureCollection.type).append("features", features));
+
+             //   .append("feature",new BasicDBObject("type", activity.feature.type)
+             //           .append("geometry", new BasicDBObject("type",activity.feature.geometry.type)
+             //                   .append("coordinates",activity.feature.geometry.coordinates))
+             //           .append("properties",new BasicDBObject("time", activity.feature.properties.time)));
         //.append();
         //BasicDBObject doc = new BasicDBObject("uid", toJson(activity));
+
 
         //.append("feature",activity.feature);
         //.append("info", new BasicDBObject("x", 203).append("y", 102));
@@ -191,18 +209,32 @@ public class Activity {
             feature.type = ((BasicDBObject)(dbObject.get("feature"))).get("type").toString();
 
 
+
+            FeatureCollection featureCollection = new FeatureCollection();
+            featureCollection.type = ((BasicDBObject)(dbObject.get("featureCollection"))).get("type").toString();
+
+            List<Feature> features = new ArrayList<Feature>();
+
+           // for(BasicDBObject basicDBObject : (List<BasicDBObject>)(dbObject.get("featureCollection").get("features"))) {
+                //TODO
+           // }
+
+
+
             //System.out.println(feature.type);
 
             //(Feature)dbObject.get("feature")
             //System.out.println(dbObject.keySet().toString());
             //System.out.println(dbObject.get("feature").getClass());
             //Feature f = fromJson(toJson(dbObject.get("feature").toString()), Feature.class);
-            toJson(dbObject.get("feature").toString());
+            //toJson(dbObject.get("feature").toString());
+
+
             a = new Activity.ActivityBuilder()
                     .aid(dbObject.get("_id").toString())
                     .name((String) dbObject.get("name"))
                     .uid((String) dbObject.get("uid"))
-                    .feature(feature).build();
+                    .featureCollection(featureCollection).build();
 
             //System.out.println(a.feature.type);
             //System.out.println(a.feature.geometry.coordinates.get(0));

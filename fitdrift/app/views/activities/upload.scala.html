@@ -1,0 +1,14 @@
+@import helper._
+@import helper.twitterBootstrap._
+
+@main("Upload form") {
+<h1>Upload form</h1>
+@helper.form(action = routes.Activities.uploadFiles(),
+'enctype -> "multipart/form-data") {
+<fieldset>
+    <input type="file" name="files" multiple id="files" size="30">
+</fieldset>
+<input type="submit" class="btn btn-primary" value="Save">
+<a class="btn" href="@routes.Activities.index()">Cancel</a>
+}
+}
