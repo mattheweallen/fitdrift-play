@@ -265,9 +265,9 @@ public class Activity {
         String featureStr = null;
 
         if(dbObject != null) {
-            Feature feature = new Feature();
+            //Feature feature = new Feature();
             //feature.type = ((BasicDBObject)(dbObject.get("feature"))).get("type").toString();
-            featureStr = dbObject.get("feature").toString();
+            featureStr = dbObject.get("featureCollection").toString();
 
             //System.out.println(feature.type);
 

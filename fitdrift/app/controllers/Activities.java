@@ -283,7 +283,7 @@ public class Activities extends Controller {
         //final Activity activity = Activity.findById(aid);
         String featureStr = Activity.findActivityFeatureStringById(aid);
 
-        System.out.println(featureStr);
+        //System.out.println(featureStr);
 
         if(featureStr == null) return notFound();
         return ok(featureStr);
