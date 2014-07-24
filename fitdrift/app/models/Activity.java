@@ -95,8 +95,13 @@ public class Activity {
         return String.format("%s - %s", uid, name);
     }
 
+    /**
+     * Takes an activity, creates a BasicDBObject representation and then persists to mongodb.
+     * @param activity
+     */
     public static void insert(Activity activity) {
 
+        //create list of BasicDBObject from the features in featureCollection
         List<BasicDBObject> features = new ArrayList<BasicDBObject>();
         for(Feature feature : activity.featureCollection.features) {
             BasicDBObject featureDBObject = new BasicDBObject("type", feature.type)
@@ -106,38 +111,34 @@ public class Activity {
             features.add(featureDBObject);
         }
 
+        //create the BasicDBObject representation of the activity
         BasicDBObject doc = new BasicDBObject("uid", activity.uid)
                 .append("name", activity.name)
                 .append("description", activity.description)
 
                 .append("featureCollection", new BasicDBObject("type", activity.featureCollection.type).append("features", features));
 
-             //   .append("feature",new BasicDBObject("type", activity.feature.type)
-             //           .append("geometry", new BasicDBObject("type",activity.feature.geometry.type)
-             //                   .append("coordinates",activity.feature.geometry.coordinates))
-             //           .append("properties",new BasicDBObject("time", activity.feature.properties.time)));
-        //.append();
-        //BasicDBObject doc = new BasicDBObject("uid", toJson(activity));
-
-
-        //.append("feature",activity.feature);
-        //.append("info", new BasicDBObject("x", 203).append("y", 102));
         DB mongodb = MongoResource.INSTANCE.getDB("fitdrift");
-        DBCollection activityColl;
-        activityColl = mongodb.getCollection("activities");
+        DBCollection activityColl = mongodb.getCollection("activities");
         activityColl.insert(doc);
     }
 
+    /**
+     * Remove activity from mongodb by its id.
+     * @param activity
+     */
     public static void remove(Activity activity) {
         BasicDBObject doc = new BasicDBObject("_id", new ObjectId(activity.aid));
         //.append("info", new BasicDBObject("x", 203).append("y", 102));
         DB mongodb = MongoResource.INSTANCE.getDB("fitdrift");
-        DBCollection activityColl;
-        activityColl = mongodb.getCollection("activities");
+        DBCollection activityColl = mongodb.getCollection("activities");
         activityColl.remove(doc);
-
     }
 
+    /**
+     * 
+     * @return
+     */
     public static List<Activity> findAll() {
         List<Activity> activities = new ArrayList<Activity>();
         DBCollection activityColl;
